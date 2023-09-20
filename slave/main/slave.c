@@ -29,8 +29,8 @@ static int days = 0;
 #define STOP_COMMAND "Power off - stop counting time" // Command to stop the timer
 #define RESET_COMMAND "RESET"
 
-#define EXAMPLE_ESP_WIFI_SSID      "HD" //add your SSID wifi
-#define EXAMPLE_ESP_WIFI_PASS      "helloHado" //add your password wifi
+#define EXAMPLE_ESP_WIFI_SSID      "" //add your SSID wifi
+#define EXAMPLE_ESP_WIFI_PASS      "" //add your password wifi
 #define EXAMPLE_ESP_MAXIMUM_RETRY 10
 
 /* FreeRTOS event group to signal when we are connected*/
