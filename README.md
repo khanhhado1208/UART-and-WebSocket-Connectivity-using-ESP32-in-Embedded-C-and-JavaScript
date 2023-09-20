@@ -1,9 +1,7 @@
-# innovation-project-ESP32-2023
-Crane Control Emulation & Connectivity in collaboration with Konecranes from Innovation Project Course at Metropolia University
-Key Achievements:
-Explored advanced industrial automation concepts through ESP32 microcontrollers.
-Gained proficiency in ESP32 programming, UART communication, and WiFi data transmission.
-Collaborated with industry professionals from Konecranes to enhance real-world problem-solving and IoT integration skills.
-Designed and executed a comprehensive project showcasing hoist control emulation and seamless data exchange.
+# Crane Control Emulation & Connectivity in collaboration with Konecranes from Innovation Project Course at Metropolia University
+## ** Crane Control Emulation & Connectivity​ **
+### TECHNOLOGIES: Reactjs, Nodejs, React-boostrap, firebase
+The project aims to develop a comprehensive system for crane control and hoist monitoring.​ The importance of real-time status monitoring and efficient operating hours tracking for maintenance planning
+![image](https://github.com/khanhhado1208/innovation-project-web-2023/assets/55555713/8afcdf83-bd62-47dc-a67d-5d39c71026f4)
 
 Link for web part: https://github.com/khanhhado1208/innovation-project-web-2023.git
