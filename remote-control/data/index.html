@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timer Control</title>
+</head>
+<style>
+    h1 {
+        color: green;
+    }
+
+    /* Timer display styling */
+    .timer {
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
+<body>
+    <center>
+        <h1>Timer Control</h1>
+        <br><br>
+        <p>Timer: <span id="timer" class="timer">00:00:00:00</span></p>
+        <button id="startButton" onclick="startTimer()">Start</button>
+        <button id="stopButton" onclick="stopTimer()" disabled>Stop</button>
+        <button onclick="resetTimer()">Reset</button>
+    </center>
+</body>
+<script>
+    var gateway = `ws://${window.location.hostname}/ws`;
+    var websocket;
+    var timerInterval;
+    var timerRunning = false;
+    var timerValue = 0;
+
+    window.addEventListener('load', onLoad);
+
+    function initWebSocket() {
+        console.log('Trying to open a WebSocket connection...');
+        websocket = new WebSocket(gateway);
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+        websocket.onmessage = onMessage;
+        websocket.onerror = onError; // Handle WebSocket errors
+    }
+
+    function onOpen(event) {
+        console.log('Connection opened');
+    }
+
+    function onClose(event) {
+        console.log('Connection closed');
+        setTimeout(initWebSocket, 2000);
+    }
+
+    function onError(event) {
+        console.error('WebSocket error:', event);
+        // Implement error handling logic here
+    }
+    function formatTimer(seconds) {
+        var days = Math.floor(seconds / (3600 * 24));
+        seconds -= days * 3600 * 24;
+        var hours = Math.floor(seconds / 3600);
+        seconds -= hours * 3600;
+        var minutes = Math.floor(seconds / 60);
+        seconds -= minutes * 60;
+    
+        var formattedTimer = "";
+    
+        if (days > 0) {
+            formattedTimer += days + " days" + " ";
+        }
+    
+        if (hours > 0) {
+            formattedTimer += hours + " hours" + " ";
+        }
+    
+        if (minutes > 0) {
+            formattedTimer += minutes + " minutes" + " ";
+        }
+    
+        formattedTimer += seconds + " seconds";
+    
+        return formattedTimer;
+    }
+    
+
+    function startTimer() {
+        timerRunning = true;
+        document.getElementById('startButton').disabled = true;
+        document.getElementById('stopButton').disabled = false;
+        timerInterval = setInterval(updateTimer, 1000);
+        // send a message to start the timer on the ESP32 here 
+    }
+
+    function stopTimer() {
+        timerRunning = false;
+        document.getElementById('startButton').disabled = false;
+        document.getElementById('stopButton').disabled = true;
+        clearInterval(timerInterval);
+        // send a message to stop the timer on the ESP32 here
+    }
+
+    function resetTimer() {
+        timerValue = 0;
+        var formattedTimer = formatTimer(timerValue);
+        websocket.send(formattedTimer);
+        document.getElementById('timer').textContent = formattedTimer;
+        // send a message to reset the timer on the ESP32 here
+    }
+
+    function updateTimer() {
+        if (timerRunning) {
+            timerValue++;
+            var formattedTimer = formatTimer(timerValue);
+            websocket.send(formattedTimer);
+            document.getElementById('timer').textContent = formattedTimer;
+        }
+    }
+
+    function onMessage(event) {
+        // Parse the received timer value and update the timerValue variable
+        timerValue = parseInt(event.data);
+        console.log(event.data);
+            // Update the timer display if it's running
+            var formattedTimer = formatTimer(timerValue);
+            document.getElementById('timer').textContent = formattedTimer;
+        
+    }
+
+    function onLoad(event) {
+        initWebSocket();
+    }
+</script>
+</html>
